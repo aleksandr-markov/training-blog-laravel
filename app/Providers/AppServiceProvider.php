@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Post;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::share('postsLatest', $posts = Post::limit(5)->orderBy('created_at', 'DESC')->get());
+
+        View::share('navCategories', $categories = Category::with('children')->whereNull('category_id')->get());
     }
 }
